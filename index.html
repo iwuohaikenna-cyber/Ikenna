@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ikenna Gideon Iwuoha | Brand & Visual Communication Designer</title>
+
+  <!-- GSAP & ScrollTrigger Engines -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #07090f;
+      --bg-soft: #10141f;
+      --card-bg: #131824;
+      --text-main: #f3f4f6;
+      --text-muted: #a3a8b8;
+      --accent: #4f8cff;
+      --accent-soft: #8fb3ff;
+      --line: rgba(255, 255, 255, 0.08);
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    /* ================= HEADER & NAVIGATION ================= */
+    header {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      background: rgba(7, 9, 15, 0.9);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      width: 50px;
+      height: 30px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* Desktop Links */
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* Mobile Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: var(--text-main);
+      transition: 0.3s ease;
+    }
+
+    /* Hamburger Transformation into X */
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* Glassmorphic Overlay Background */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 15, 25, 0.6);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.4s ease;
+      z-index: 999;
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Slide-out Mobile Menu Panel */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      height: 100vh;
+      background: rgba(16, 20, 31, 0.95);
+      backdrop-filter: blur(14px);
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      padding-top: 120px;
+      padding-left: 30px;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+
+    .mobile-menu a {
+      margin-bottom: 28px;
+      font-size: 18px;
+      color: var(--text-muted);
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .mobile-menu a.active {
+      color: var(--accent);
+    }
+
+    .mobile-menu a:hover {
+      color: var(--accent);
+      transform: translateX(6px);
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    /* ================= EDITING / BRANDING TOOLS ================= */
+    .editor-tools {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 999;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: rgba(16, 20, 31, 0.95);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .editor-tools[hidden] {
+      display: none;
+    }
+
+    .editor-btn {
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      padding: 10px 16px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .editor-reset {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 10px 16px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .editor-btn:hover,
+    .editor-reset:hover {
+      opacity: 0.85;
+    }
+
+    /* ================= CORE PORTFOLIO SECTIONS ================= */
+    section {
+      padding: 110px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero-section {
+      border-top: none;
+      padding: 110px 0 90px;
+    }
+
+    /* Hero Layout */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-label {
+      color: var(--accent);
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(44px, 7vw, 88px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+      margin-bottom: 26px;
+    }
+
+    .hero h1 span {
+      color: var(--accent-soft);
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: var(--text-muted);
+      font-size: 18px;
+      margin-bottom: 36px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 40px;
+      font-size: 14px;
+      border: 1px solid var(--line);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      border-color: var(--accent);
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    /* Magnetic Interface Component Container */
+    .magnetic {
+      display: inline-block;
+      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* User Portrait Component */
+    .profile-card {
+      background: linear-gradient(145deg, #121827, #080b12);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .profile-photo {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+    }
+
+    .profile-caption {
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* SECTION LAYOUT HEADERS */
+    .section-heading {
+      display: grid;
+      grid-template-columns: 0.4fr 1fr;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .section-number {
+      color: var(--accent);
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    /* ABOUT PORTFOLIO SECTION */
+    .about-content {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 60px;
+    }
+
+    .about-meta {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .about-meta p {
+      margin-bottom: 10px;
+    }
+
+    .about-text p {
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      font-size: 17px;
+    }
+
+    .about-text strong,
+    .about-meta strong {
+      color: var(--text-main);
+    }
+
+    /* SKILLS GRID MATRIX */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px;
+      transition: border-color 0.3s ease;
+    }
+
+    .skill-card:hover {
+      border-color: var(--accent);
+    }
+
+    .skill-card h3 {
+      margin-bottom: 18px;
+      font-size: 18px;
+      color: var(--text-main);
+    }
+
+    .skill-card ul {
+      list-style: none;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .skill-card li {
+      margin-bottom: 10px;
+    }
+
+    /* PROJECTS DISPLAY CASE STUDY CARDS */
+    .project {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 34px;
+      margin-bottom: 36px;
+    }
+
+    .project-header {
+      display: grid;
+      grid-template-columns: 1fr 0.6fr;
+      gap: 30px;
+      margin-bottom: 28px;
+    }
+
+    .project h3 {
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: -1.5px;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .project-category {
+      color: var(--accent);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .project-description {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
+    .project-info {
+      color: var(--text-muted);
+      font-size: 14px;
+      border-left: 1px solid var(--line);
+      padding-left: 24px;
+    }
+
+    .project-info p {
+      margin-bottom: 12px;
+    }
+
+    .project-info strong {
+      color: var(--text-main);
+    }
+
+    .project-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .image-frame {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      min-height: 280px;
+    }
+
+    .image-frame.large {
+      grid-column: span 2;
+      min-height: 420px;
+    }
+
+    .project-img {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .image-frame.large .project-img {
+      min-height: 420px;
+    }
+
+    .image-frame:hover .project-img {
+      transform: scale(1.03);
+    }
+
+    /* CONTACT SECTION AREA */
+    .contact-box {
+      background: linear-gradient(145deg, #121827, #080b12);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 50px;
+      text-align: center;
+    }
+
+    .contact-box h2 {
+      font-size: clamp(34px, 5vw, 64px);
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .contact-box p {
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      padding: 34px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ================= RESPONSIVE ADAPTABILITY ================= */
+    @media (max-width: 900px) {
+      .hero,
+      .about-content,
+      .section-heading,
+      .project-header {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-section {
+        padding-top: 70px;
+      }
+
+      .project-info {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--line);
+        padding-top: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .skills-grid,
+      .project-images {
+        grid-template-columns: 1fr;
+      }
+
+      .image-frame.large {
+        grid-column: span 1;
+      }
+
+      .contact-box {
+        padding: 34px 24px;
+      }
+
+      .editor-tools {
+        right: 12px;
+        left: 12px;
+        justify-content: center;
+      }
+    }
+      /* ================= RANDOM WORK GRID ================= */
+
+.random-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.random-item {
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  transition: 0.4s ease;
+}
+
+.random-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.6s ease;
+}
+
+.random-item:hover img {
+  transform: scale(1.05);
+}
+
+.random-item:hover {
+  border-color: var(--text-main);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .random-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .random-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- Hidden Brand Logo Uploader (?edit=true) -->
+  <div id="editorTools" class="editor-tools" hidden>
+    <label for="logoUpload" class="editor-btn">Upload Logo</label>
+    <input type="file" id="logoUpload" accept="image/*" hidden />
+    <button type="button" id="resetLogo" class="editor-reset">Reset Logo</button>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#home" class="brand">
+          <img
+            id="siteLogo"
+            class="logo-img"
+            src="img/logo.png"
+            alt="Ikenna Gideon Iwuoha Logo"
+          />
+        </a>
+
+        <!-- Desktop Navigation links -->
+        <ul class="nav-links">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>         
+          <li><a href="#selected-works">Selected Works</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="Ikenna_Iwuoha_Resume.pdf">View Resume</a></li>
+        </ul>
+
+        <!-- Mobile Interaction Elements -->
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Canvas elements -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>    
+    <a href="#selected-works">Selected Works</a>
+    <a href="#contact">Contact</a>
+    <a href="Ikenna_Iwuoha_Resume.pdf">View Resume</a>
+  </div>
+
+  <main>
+    
+    <!-- HOME HERO SECTION -->
+    <section id="home" class="hero-section">
+      <div class="container">
+        <div class="hero">
+          <div>
+            <div class="hero-label">Graphic Designer Portfolio</div>
+            <h1>Brand & Visual <span>Communication</span> Designer</h1>
+            <p>
+              I create strategic, elegant, and modern design systems for fintech,
+              digital-first brands, social campaigns, print communication, logos,
+              and motion-led visual experiences.
+            </p>
+            <div class="hero-buttons">
+              <a href="#projects" class="btn btn-primary magnetic">View Projects</a>
+              <a href="#contact" class="btn magnetic">Contact Me</a>
+              <a href="Ikenna_Iwuoha_Resume.pdf" class="btn magnetic">View Resume</a>
+            </div>
+          </div>
+
+          <div class="profile-card">
+            <img class="profile-photo" src="img/my.jpg" alt="Professional portrait of Ikenna Gideon Iwuoha">
+            <p class="profile-caption">
+              Ikenna Gideon Iwuoha — Brand, Social Media, Print, Logo & Motion Designer.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-number">&nbsp;About</div>
+          <h2 class="section-title">Designing with clarity, trust, and visual confidence.</h2>
+        </div>
+
+        <div class="about-content">
+          <div class="about-meta">
+            <p><strong>Name:</strong> Ikenna Gideon Iwuoha</p>
+            <p><strong>Role:</strong> Brand Identity&nbsp; &amp; Visual&nbsp; Designer</p>
+            <p><strong>Focus:</strong> Fintech, Branding, Social Media, Print, Logos, Motion Flyers</p>
+          </div>
+
+          <div class="about-text">
+            <p>
+  I am a <strong>Brand Identity and Visual Designer</strong> with <strong>over four years of experience</strong> creating strategic, modern identities for digital-first brands. My work spans brand identity systems, fintech-focused digital design, social media campaigns, print communication, logo design, and motion graphics.
+</p>
+
+<p>
+  I see design as both a creative craft and a strategic tool. By combining strong typography, structured grid systems, refined editorial aesthetics, and purposeful visual storytelling, I create brands that are clear, memorable, and built to earn trust. These qualities are especially important for fintech and technology-driven businesses where credibility and user confidence matter.
+</p>
+
+<p>
+  Throughout my career, I have developed cohesive brand systems that translate seamlessly across mobile applications, websites, marketing campaigns, presentations, reports, print materials, and motion assets. My focus is on creating scalable visual identities that strengthen brand recognition and leave a lasting impression.
+</p>
+
+<p>
+  My goal is simple: to design intelligent, elegant, and modern brand experiences that communicate confidence, inspire trust, and create long-term value for businesses.
+</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-number">Skills</div>
+          <h2 class="section-title">Core Creative Capabilities.</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <h3>Brand Identity</h3>
+            <ul>
+              <li>Logo Design</li>
+              <li>Brand Systems</li>
+              <li>Visual Identity</li>
+              <li>Brand Guidelines</li>
+            </ul>
+          </div>
+
+          <div class="skill-card">
+            <h3>Digital Design</h3>
+            <ul>
+              <li>Social Media Campaigns</li>
+              <li>Ad Creatives</li>
+              <li>Fintech UI Mockups</li>
+              <li>Content Systems</li>
+            </ul>
+          </div>
+
+          <div class="skill-card">
+            <h3>Print Design</h3>
+            <ul>
+              <li>Flyers</li>
+              <li>Brochures</li>
+              <li>Annual Reports</li>
+              <li>Editorial Layouts</li>
+            </ul>
+          </div>
+
+          <div class="skill-card">
+            <h3>Motion Design</h3>
+            <ul>
+              <li>Motion Flyers</li>
+              <li>Animated Ads</li>
+              <li>Promo Visuals</li>
+              <li>Style Frames</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+      <!-- RANDOM DESIGNS / SELECTED WORKS -->
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <div class="section-number">Projects</div>
+          <h2 class="section-title">Featured Fintech Projects.</h2>
+        </div>
+
+        <!-- PROJECT 1: VAULTIX -->
+        <article class="project">
+          <div class="project-header">
+            <div>
+              <div class="project-category">Brand Identity / Fintech</div>
+              <h3>Vaultix — Digital Banking Brand Identity</h3>
+              <p class="project-description">
+                A premium brand identity created for a modern digital banking platform, designed to communicate trust, innovation, and financial confidence. The visual system combines clean typography, bold color, and scalable brand assets to deliver a cohesive identity that feels secure, contemporary, and built for the future of digital finance.
+              </p>
+            </div>
+
+            <div class="project-info">
+              <p><strong>Role:</strong> Brand Designer</p>
+              <p><strong>Deliverables:</strong> Logo, brand system, card design, app mockups</p>
+              <p><strong>Tools:</strong> Illustrator, Photoshop, Figma, Canva</p>
+            </div>
+          </div>
+
+          <div class="project-images">
+            <div class="image-frame large">
+              <img class="project-img" src="img/d9cd5b0c-4978-41b5-b9f5-84eefa9498b1.png" alt="Vaultix fintech brand identity hero mockup">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/6323b91b-331c-408e-8b83-5a20168bfe31.png" alt="Vaultix logo system">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/374c275c-aeec-4f21-b1df-d6797c3e5c65.png" alt="Vaultix debit card mockup">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/4cd64336-9437-4116-b067-5b230c3df4e4.png" alt="Vaultix mobile banking app UI mockup">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/67c33ba0-1b12-4d57-972f-2045e2a1a32f-1.png" alt="Vaultix brand guidelines layout">
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 2: OWN YOUR FUTURE -->
+        <article class="project">
+          <div class="project-header">
+            <div>
+              <div class="project-category">Social Media Campaign</div>
+              <h3>Own Your Future — Investment Awareness Campaign</h3>
+              <p class="project-description">A fintech-focused social media campaign crafted to inspire a new generation of investors. Combining strategic messaging with a modern visual identity, the campaign promotes financial literacy, builds trust, and encourages young professionals to make informed investment decisions with confidence.</p>
+            </div>
+
+            <div class="project-info">
+              <p><strong>Role:</strong> Campaign Designer</p>
+              <p><strong>Deliverables:</strong> Instagram grid, stories, ads, promotional assets</p>
+              <p><strong>Tools:</strong> Photoshop, Canva, After Effects</p>
+            </div>
+          </div>
+
+          <div class="project-images">
+            <div class="image-frame large">
+              <img class="project-img" src="img/92c2ca66-d937-4a05-82bd-534e7201cf52.png" alt="Fintech social media campaign grid">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/e507e5e7-c2cd-489a-bace-5d5c063e8b79.png" alt="Fintech LinkedIn advertisement design">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/b891786a-3fbe-4025-8c67-504d7a9d9fb5.png" alt="Fintech Instagram story design">
+            </div>
+          </div>
+        </article>
+        
+
+        <!-- PROJECT 4: MOTION FLYER -->
+        <article class="project">
+          <div class="project-header">
+            <div>
+              <div class="project-category">Motion Flyer / Digital Campaign</div>
+              <h3>The Future of Finance Is Here</h3>
+              <p class="project-description">
+                A cinematic motion flyer concept for a fintech product launch, designed with
+                glowing data visuals, bold typography, and premium digital energy.
+              </p>
+            </div>
+
+            <div class="project-info">
+              <p><strong>Role:</strong> Motion Graphics Designer</p>
+              <p><strong>Deliverables:</strong> Style frames, animated flyer, social video ad</p>
+              <p><strong>Tools:</strong> After Effects, Photoshop, Canva</p>
+            </div>
+          </div>
+
+          <div class="project-images">
+            <div class="image-frame large">
+              <img class="project-img" src="img/8c5f7f16-6b52-49ef-9acc-0a20ee1e2ae4.png" alt="Fintech motion flyer preview">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/voltex2.png" alt="Motion flyer style frame one">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/voltex1.png" alt="Motion flyer style frame two">
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 5: REBRAND CASE STUDY -->
+        <article class="project">
+          <div class="project-header">
+            <div>
+              <div class="project-category">Rebrand / Case Study</div>
+              <h3>Fintech Rebrand Concept</h3>
+              <p class="project-description">
+                A before-and-after rebrand project showing how a fintech identity can be
+                modernized through improved typography, color, layout, and brand application.
+              </p>
+            </div>
+
+            <div class="project-info">
+              <p><strong>Role:</strong> Brand Identity Designer</p>
+              <p><strong>Deliverables:</strong> Logo refresh, UI mockup, website hero, brand assets</p>
+              <p><strong>Tools:</strong> Illustrator, Figma, Canva</p>
+            </div>
+          </div>
+
+          <div class="project-images">
+            <div class="image-frame large">
+              <img class="project-img" src="img/recreate-to-look-better-2k-202607162038.jpeg" alt="Fintech before and after rebrand mockup">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/83b09f81-4d80-452e-94a7-e927169cd48d.png" alt="Fintech website hero section mockup">
+            </div>
+            <div class="image-frame">
+              <img class="project-img" src="img/9d4ebbcf-a7b3-4c61-92a5-440f88f1f24f.png" alt="Fintech brand application mockup">
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+      <!-- RANDOM DESIGNS / SELECTED WORKS -->
+<!-- SELECTED WORKS -->
+<section id="selected-works">
+  <div class="container">
+    <div class="section-heading">
+      <div class="section-number">Selected Works</div>
+      <h2 class="section-title">
+        Independent explorations across branding, typography, &amp; layout.
+      </h2>
+    </div>
+
+    <div class="random-grid">
+
+      <!-- 01 -->
+      <div class="random-item">
+        <img src="img/download-1.png" alt="Editorial poster design 1">
+      </div>
+
+      <!-- 02 -->
+      <div class="random-item">
+        <img src="img/download-2.png" alt="Typography exploration 1">
+      </div>
+
+      <!-- 03 -->
+      <div class="random-item">
+        <img src="img/download-6.png" alt="Logo concept 1">
+      </div>
+
+      <!-- 04 -->
+      <div class="random-item">
+        <img src="img/download-4.png" alt="Social design concept">
+      </div>
+
+      <!-- 05 -->
+      <div class="random-item">
+        <img src="img/download-3.png" alt="Abstract brand concept">
+      </div>
+
+      <!-- 06 -->
+      <div class="random-item">
+        <img src="img/download-5.png" alt="Motion still frame">
+      </div>
+
+      <!-- 07 -->
+      <div class="random-item">
+        <img src="img/download-12.png" alt="Editorial layout design">
+      </div>
+
+      <!-- 08 -->
+      <div class="random-item">
+        <img src="img/download-13.png" alt="Minimal poster concept">
+      </div>
+
+      <!-- 09 -->
+      <div class="random-item">
+        <img src="img/download-10.png" alt="Packaging mockup">
+      </div>
+
+      <!-- 10 -->
+      <div class="random-item">
+        <img src="img/design-social-media-post-banner-202607162048.jpeg" alt="Logo exploration 2">
+      </div>
+
+      <!-- 11 -->
+      <div class="random-item">
+        <img src="img/design-social-media-post-banner-202607162047-1.jpeg" alt="Experimental typography design">
+      </div>
+
+      <!-- 12 -->
+      <div class="random-item">
+        <img src="img/design-social-media-banner-nigeria-202607162048.jpeg" alt="Conceptual brand visual">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+      <div class="container">
+        <div class="contact-box">
+          <h2>Let’s create impactful financial brand experiences.</h2>
+          <p>
+            Available for fintech, brand identity, digital campaign, print, logo, and motion design roles.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:iwuohaikenna@gmail.com" class="btn btn-primary magnetic">Email Me</a>
+            <a href="#" class="btn magnetic">Behance</a>
+            <a href="www.linkedin.com/in/ikenna-gideon-iwuoha" class="btn magnetic">LinkedIn</a>
+            <a href="Ikenna_Iwuoha_Resume.pdf" class="btn magnetic">View Resume</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      © 2025 Ikenna Gideon Iwuoha. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- ENGINE CONTROL SCRIPTS -->
+  <script>
+    // Register GSAP Scrolling Engine extension
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ================= GSAP ENTRANCE ANIMATIONS ================= */
+    // Smooth top-level component reveal on load
+    gsap.from(".logo-img, .nav-links li", {
+      y: -20,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.1,
+      ease: "power3.out"
+    });
+
+    gsap.from(".hero-label, .hero h1, .hero p, .hero-buttons", {
+      y: 50,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: "power4.out"
+    });
+
+    gsap.from(".profile-card", {
+      scale: 0.9,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power2.out",
+      delay: 0.5
+    });
+
+    // Dynamic ScrollReveal Trigger for Content Sections
+    gsap.utils.toArray("section").forEach((section) => {
+      // Don't target hero, handles entrance transition separately above
+      if (section.id === "home") return;
+
+      gsap.from(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+    });
+
+    /* ================= SMOOTH MAGNETIC MOUSE TRACKING ================= */
+    document.querySelectorAll(".magnetic").forEach((el) => {
+      el.addEventListener("mousemove", (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        gsap.to(el, {
+          x: x * 0.25,
+          y: y * 0.25,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      el.addEventListener("mouseleave", () => {
+        gsap.to(el, {
+          x: 0,
+          y: 0,
+          duration: 0.4,
+          ease: "elastic.out(1, 0.3)"
+        });
+      });
+    });
+
+    /* ================= NAVIGATION ACTIVE TRACKING ================= */
+    const sections = document.querySelectorAll("section, .hero-section");
+    const navLinks = document.querySelectorAll(".nav-links a, .mobile-menu a");
+
+    window.addEventListener("scroll", () => {
+      let currentSectionId = "home";
+      
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 250) {
+          currentSectionId = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + currentSectionId) {
+          link.classList.add("active");
+        }
+      });
+    });
+
+    /* ================= MOBILE MENU ANIMATION ================= */
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const mobileLinks = mobileMenu.querySelectorAll("a");
+
+    function openMobileMenu() {
+      hamburger.classList.add("active");
+      mobileMenu.classList.add("active");
+      menuOverlay.classList.add("active");
+      document.body.style.overflow = "hidden"; // Block page scrolling during active overlay menu
+    }
+
+    function closeMobileMenu() {
+      hamburger.classList.remove("active");
+      mobileMenu.classList.remove("active");
+      menuOverlay.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    hamburger.addEventListener("click", () => {
+      if (mobileMenu.classList.contains("active")) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    menuOverlay.addEventListener("click", closeMobileMenu);
+    mobileLinks.forEach(link => {
+      link.addEventListener("click", closeMobileMenu);
+    });
+
+    /* ================= EDITING / BRANDING ENGINE CONTROL ================= */
+    const editorTools = document.getElementById("editorTools");
+    const logoUpload = document.getElementById("logoUpload");
+    const siteLogo = document.getElementById("siteLogo");
+    const resetLogo = document.getElementById("resetLogo");
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Activates interface editing UI parameters when ?edit=true parameter is requested
+    if (urlParams.get("edit") === "true") {
+      editorTools.hidden = false;
+    }
+
+    const savedLogo = localStorage.getItem("ikennaPortfolioLogo");
+    if (savedLogo) {
+      siteLogo.src = savedLogo;
+    }
+
+    logoUpload.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        siteLogo.src = event.target.result;
+        localStorage.setItem("ikennaPortfolioLogo", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    resetLogo.addEventListener("click", function () {
+      localStorage.removeItem("ikennaPortfolioLogo");
+      siteLogo.src = "https://placehold.co/220x64/07090f/ffffff?text=IGI+Logo";
+    });
+  </script>
+
+</body>
+</html>
